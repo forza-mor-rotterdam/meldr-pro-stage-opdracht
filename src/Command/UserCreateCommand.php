@@ -21,7 +21,7 @@ class UserCreateCommand extends Command
 {
     private EntityManagerInterface $em;
 
-    private PasswordHasherInterface $passwordHasher;
+    private UserPasswordHasherInterface $passwordHasher;
 
     public function __construct(EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher)
     {
@@ -53,7 +53,7 @@ class UserCreateCommand extends Command
         $user = new AppUser();
         $user->setUsername($input->getArgument('username'));
         $user->setGivenName($input->getArgument('givenName'));
-        $user->setPassword($this->passwordHasher->hash($password));
+        $user->setPassword($this->passwordHasher->hashPassword($user, $password));
 
         $this->em->persist($user);
         $this->em->flush();
