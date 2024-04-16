@@ -1,5 +1,31 @@
-{% extends "base.html.twig" %}
+{# templates/melding/overzicht.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Alle Meldingen{% endblock %}
 
 {% block body %}
-    <h1>Meldingen overzicht</h1>
+    <h1>Alle Meldingen</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Melding ID</th>
+            <th scope="col">Gebruiker ID</th>
+            <th scope="col">Type Melding</th>
+            <th scope="col">Inhoud</th>
+            <th scope="col">Datum/Tijd</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for melding in meldingen %}
+            <tr>
+                <td>{{ melding.id }}</td>
+                <td>{{ melding.userId }}</td>
+                <td>{{ melding.typeMelding }}</td>
+                <td>{{ melding.inhoud }}</td>
+                <td>{{ melding.datumTijd|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
