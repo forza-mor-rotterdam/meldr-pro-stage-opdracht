@@ -23,6 +23,12 @@
     {# Knop voor "Mijn Meldingen" #}
     <a href="{{ path('mijn_meldingen') }}" class="btn btn-primary mb-3">Mijn Meldingen</a>
 
+    {# Knoppen voor het toevoegen van een nieuwe medewerker en bekijken van medewerkers #}
+    <div class="mb-3">
+        <a href="{{ path('admin_create_user') }}" class="btn btn-primary">Nieuwe Medewerker Toevoegen</a>
+        <a href="{{ path('admin_dashboard') }}" class="btn btn-primary">Medewerkers</a>
+    </div>
+
     {# Meldingstabel #}
     <table class="table">
         <thead>
