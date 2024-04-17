@@ -12,22 +12,22 @@ class Melding
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    public ?int $id = null;
 
     #[ORM\Column]
-    private ?int $melding_id = null;
+    public ?int $melding_id = null;
 
     #[ORM\Column]
-    private ?int $user_id = null;
+    public ?int $user_id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $type_melding = null;
+    public ?string $type_melding = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $inhoud = null;
+    public ?string $inhoud = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $datum_tijd = null;
+    public ?\DateTimeInterface $datum_tijd = null;
 
     public function getId(): ?int
     {

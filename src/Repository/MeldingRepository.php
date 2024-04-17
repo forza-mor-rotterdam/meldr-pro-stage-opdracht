@@ -1,6 +1,5 @@
 <?php
-
-// src/Repository/MeldingenRepository.php
+// src/Repository/MeldingRepository.php
 
 namespace App\Repository;
 
@@ -10,11 +9,19 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class MeldingRepository extends ServiceEntityRepository
 {
+public function __construct(ManagerRegistry $registry)
+{
+parent::__construct($registry, Melding::class);
+}
 
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Melding::class);
-    }
+public function findByTypeMelding(string $type_melding): array
+{
+$queryBuilder = $this->createQueryBuilder('m')
+->andWhere('m.type_melding = :type_melding')
+->setParameter('type_melding', $type_melding)
+->getQuery();
 
-    // You can add custom repository methods here if needed
+
+return $queryBuilder->getResult();
+}
 }

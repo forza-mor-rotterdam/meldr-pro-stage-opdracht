@@ -40,9 +40,16 @@ class MeldingController extends AbstractController
     }
 
     #[Route('/meldingen', name: 'meldingen_overzicht')]
-    public function overzicht(MeldingRepository $meldingRepository): Response
+    public function overzicht(Request $request, MeldingRepository $meldingRepository): Response
     {
-        $meldingen = $meldingRepository->findAll();
+        $type_Melding = $request->query->get('type_melding');
+
+
+        if ($type_Melding) {
+            $meldingen = $meldingRepository->findByTypeMelding($type_Melding);
+        } else {
+            $meldingen = $meldingRepository->findAll();
+        }
 
         return $this->render('melding/index.html.twig', [
             'meldingen' => $meldingen,

@@ -6,6 +6,20 @@
 
 {% block body %}
     <h1>Alle Meldingen</h1>
+
+    {# Filterformulier #}
+    <form action="{{ path('meldingen_overzicht') }}" method="get">
+        <label for="type_melding">Type Melding:</label>
+        <select name="type_melding" id="type_melding">
+            <option value="">Alle</option>
+            <option value="afval">Afval</option>
+            <option value="verlichting">Verlichting</option>
+            <!-- Voeg hier andere type meldingen toe -->
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+
+    {# Meldingstabel #}
     <table class="table">
         <thead>
         <tr>
@@ -21,7 +35,7 @@
             <tr>
                 <td>{{ melding.id }}</td>
                 <td>{{ melding.userId }}</td>
-                <td>{{ melding.typeMelding }}</td>
+                <td>{{ melding.type_melding }}</td>
                 <td>{{ melding.inhoud }}</td>
                 <td>{{ melding.datumTijd|date('Y-m-d H:i:s') }}</td>
             </tr>
