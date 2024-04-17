@@ -48,6 +48,8 @@ class MeldingController extends AbstractController
     #[Route('melding/index.html.twig', name: 'meldingen_overzicht')]
     public function overzicht(Request $request): Response
     {
+        $currentUser = $this->getUser();
+
         // Haal de geselecteerde categorie op uit de queryparameters van het verzoek
         $categorie = $request->query->get('type_melding');
 
@@ -60,9 +62,20 @@ class MeldingController extends AbstractController
 
         return $this->render('melding/index.html.twig', [
             'meldingen' => $meldingen,
+            'currentUser' => $currentUser,
         ]);
     }
 
+    #[Route('melding/mijn_meldingen.html.twig.html', name: 'mijn_meldingen')]
+    public function mijnMeldingen(): Response
+    {
+        $currentUser = $this->getUser();
+        $meldingen = $this->entityManager->getRepository(Melding::class)->findBy(['user_id' => $currentUser->getId()]);
+
+        return $this->render('melding/mijn_meldingen.html.twig.html', [
+            'meldingen' => $meldingen,
+        ]);
+    }
 
     #[Route('/bevestiging/{id}', name: 'melding_bevestiging')]
     public function bevestiging($id): Response

@@ -1,5 +1,3 @@
-{# templates/melding/overzicht.html.twig #}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Alle Meldingen{% endblock %}
@@ -21,6 +19,9 @@
 
     {# Knop voor meldingen toevoegen #}
     <a href="{{ path('melding_toevoegen') }}" class="btn btn-primary mb-3">Melding Toevoegen</a>
+
+    {# Knop voor "Mijn Meldingen" #}
+    <a href="{{ path('mijn_meldingen') }}" class="btn btn-primary mb-3">Mijn Meldingen</a>
 
     {# Meldingstabel #}
     <table class="table">
