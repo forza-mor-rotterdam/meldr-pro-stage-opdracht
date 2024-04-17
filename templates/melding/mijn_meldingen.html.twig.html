@@ -5,6 +5,9 @@
 {% block body %}
 <h1>Mijn Meldingen</h1>
 
+{# Knop voor terug naar alle meldingen #}
+<a href="{{ path('meldingen_overzicht') }}" class="btn btn-primary mb-3">Terug naar Alle Meldingen</a>
+
 {# Meldingstabel #}
 <table class="table">
   <thead>
@@ -20,7 +23,7 @@
   {% for melding in meldingen %}
   <tr>
     <td>{{ melding.meldingid }}</td>
-    <td>{{ melding.userId }}</td>
+    <td>{{ melding.user_id }}</td>
     <td>{{ melding.type_melding }}</td>
     <td>{{ melding.inhoud }}</td>
     <td>{{ melding.datumTijd|date('Y-m-d H:i:s') }}</td>
@@ -28,5 +31,4 @@
   {% endfor %}
   </tbody>
 </table>
-
 {% endblock %}
