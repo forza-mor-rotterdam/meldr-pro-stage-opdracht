@@ -6,6 +6,9 @@
 
 {% block body %}
     <h1>Melding Toevoegen</h1>
+    {% if last_melding_id is defined %}
+        <div class="alert alert-success">Je melding (ID: {{ last_melding_id }}) is toegevoegd!</div>
+    {% endif %}
     {{ form_start(form) }}
     <div class="form-group">
         {{ form_label(form.type_melding) }}

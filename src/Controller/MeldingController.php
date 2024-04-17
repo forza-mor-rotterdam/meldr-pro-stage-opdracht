@@ -4,17 +4,24 @@ namespace App\Controller;
 
 use App\Entity\Melding;
 use App\Form\MeldingType;
-use App\Repository\MeldingRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\ORM\EntityManagerInterface;
 
+#[Route('/melding')]
 class MeldingController extends AbstractController
 {
-    #[Route('/melding/toevoegen', name: 'melding_toevoegen')]
-    public function toevoegen(Request $request, EntityManagerInterface $entityManager): Response
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    #[Route('/toevoegen', name: 'melding_toevoegen')]
+    public function toevoegen(Request $request): Response
     {
         $melding = new Melding();
         $melding->setMeldingId((int)uniqid()); // Unieke melding ID genereren
@@ -26,12 +33,11 @@ class MeldingController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Gebruik de EntityManager om de melding op te slaan
-            $entityManager->persist($melding);
-            $entityManager->flush();
+            $this->entityManager->persist($melding);
+            $this->entityManager->flush();
 
-            $this->addFlash('success', 'Melding toegevoegd!');
-
-            return $this->redirectToRoute('melding_toevoegen'); // Herladen van de pagina na toevoegen van melding
+            // Redirect naar de bevestigingspagina
+            return $this->redirectToRoute('melding_bevestiging', ['id' => $melding->getMeldingId()]);
         }
 
         return $this->render('melding/toevoegen.html.twig', [
@@ -39,20 +45,37 @@ class MeldingController extends AbstractController
         ]);
     }
 
-    #[Route('/meldingen', name: 'meldingen_overzicht')]
-    public function overzicht(Request $request, MeldingRepository $meldingRepository): Response
+    #[Route('melding/index.html.twig', name: 'meldingen_overzicht')]
+    public function overzicht(Request $request): Response
     {
-        $type_Melding = $request->query->get('type_melding');
+        // Haal de geselecteerde categorie op uit de queryparameters van het verzoek
+        $categorie = $request->query->get('type_melding');
 
-
-        if ($type_Melding) {
-            $meldingen = $meldingRepository->findByTypeMelding($type_Melding);
+        // Haal alle meldingen op of filter op de geselecteerde categorie
+        if ($categorie) {
+            $meldingen = $this->entityManager->getRepository(Melding::class)->findBy(['type_melding' => $categorie]);
         } else {
-            $meldingen = $meldingRepository->findAll();
+            $meldingen = $this->entityManager->getRepository(Melding::class)->findAll();
         }
 
         return $this->render('melding/index.html.twig', [
             'meldingen' => $meldingen,
+        ]);
+    }
+
+
+    #[Route('/bevestiging/{id}', name: 'melding_bevestiging')]
+    public function bevestiging($id): Response
+    {
+        // Haal de melding op basis van melding_id
+        $melding = $this->entityManager->getRepository(Melding::class)->findOneBy(['melding_id' => $id]);
+
+        if (!$melding) {
+            throw $this->createNotFoundException('Deze melding bestaat niet');
+        }
+
+        return $this->render('melding/bevestiging.html.twig', [
+            'melding' => $melding,
         ]);
     }
 }

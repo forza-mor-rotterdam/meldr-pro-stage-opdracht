@@ -31,3 +31,4 @@ categorie_overzicht:
     path: /categorie/overzicht
     controller: 'App\Controller\CategorieController::overzicht'
     methods: ['GET']
+

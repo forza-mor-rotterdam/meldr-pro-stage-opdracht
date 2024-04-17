@@ -1,0 +1,13 @@
+{# templates/melding/bevestiging.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Melding Toegevoegd{% endblock %}
+
+{% block body %}
+    <h1>Melding Toegevoegd</h1>
+    <div class="alert alert-success">Melding toegevoegd met melding ID: {{ melding.getMeldingID() }}</div>
+    <p>Wat wil je nu doen?</p>
+    <a href="{{ path('melding_toevoegen') }}" class="btn btn-primary">Nieuwe Melding Toevoegen</a>
+    <a href="{{ path('meldingen_overzicht') }}" class="btn btn-secondary">Terug naar Meldingenoverzicht</a>
+{% endblock %}

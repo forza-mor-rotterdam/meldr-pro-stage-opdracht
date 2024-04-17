@@ -19,6 +19,9 @@
         <button type="submit">Filter</button>
     </form>
 
+    {# Knop voor meldingen toevoegen #}
+    <a href="{{ path('melding_toevoegen') }}" class="btn btn-primary mb-3">Melding Toevoegen</a>
+
     {# Meldingstabel #}
     <table class="table">
         <thead>
@@ -33,7 +36,7 @@
         <tbody>
         {% for melding in meldingen %}
             <tr>
-                <td>{{ melding.id }}</td>
+                <td>{{ melding.meldingid }}</td>
                 <td>{{ melding.userId }}</td>
                 <td>{{ melding.type_melding }}</td>
                 <td>{{ melding.inhoud }}</td>
@@ -42,4 +45,5 @@
         {% endfor %}
         </tbody>
     </table>
+
 {% endblock %}
