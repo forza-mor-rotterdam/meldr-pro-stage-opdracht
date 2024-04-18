@@ -32,11 +32,6 @@ class MeldingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Haal de locatie-naam op uit het formulier
-            $locatieNaam = $form->get('locatie_naam')->getData();
-            // Stel de locatie-naam in voor de melding
-            $melding->setLocatieNaam($locatieNaam);
-
             $this->entityManager->persist($melding);
             $this->entityManager->flush();
 
@@ -45,36 +40,6 @@ class MeldingController extends AbstractController
 
         return $this->render('melding/toevoegen.html.twig', [
             'form' => $form->createView(),
-        ]);
-    }
-
-    #[Route('melding/index.html.twig', name: 'meldingen_overzicht')]
-    public function overzicht(Request $request): Response
-    {
-        $currentUser = $this->getUser();
-
-        $categorie = $request->query->get('type_melding');
-
-        if ($categorie) {
-            $meldingen = $this->entityManager->getRepository(Melding::class)->findBy(['type_melding' => $categorie]);
-        } else {
-            $meldingen = $this->entityManager->getRepository(Melding::class)->findAll();
-        }
-
-        return $this->render('melding/index.html.twig', [
-            'meldingen' => $meldingen,
-            'currentUser' => $currentUser,
-        ]);
-    }
-
-    #[Route('melding/mijn_meldingen.html.twig.html', name: 'mijn_meldingen')]
-    public function mijnMeldingen(): Response
-    {
-        $currentUser = $this->getUser();
-        $meldingen = $this->entityManager->getRepository(Melding::class)->findBy(['user_id' => $currentUser->getId()]);
-
-        return $this->render('melding/mijn_meldingen.html.twig.html', [
-            'meldingen' => $meldingen,
         ]);
     }
 
@@ -89,6 +54,35 @@ class MeldingController extends AbstractController
 
         return $this->render('melding/bevestiging.html.twig', [
             'melding' => $melding,
+        ]);
+    }
+
+    #[Route('/mijn-meldingen', name: 'mijn_meldingen')]
+    public function mijnMeldingen(): Response
+    {
+        $currentUser = $this->getUser();
+        $meldingen = $this->entityManager->getRepository(Melding::class)->findBy(['user_id' => $currentUser->getId()]);
+
+        return $this->render('melding/mijn_meldingen.html.twig.html', [
+            'meldingen' => $meldingen,
+        ]);
+    }
+
+    #[Route('/meldingen-overzicht', name: 'meldingen_overzicht')]
+    public function overzicht(Request $request): Response
+    {
+        $currentUser = $this->getUser();
+        $categorie = $request->query->get('type_melding');
+
+        if ($categorie) {
+            $meldingen = $this->entityManager->getRepository(Melding::class)->findBy(['type_melding' => $categorie]);
+        } else {
+            $meldingen = $this->entityManager->getRepository(Melding::class)->findAll();
+        }
+
+        return $this->render('melding/index.html.twig', [
+            'meldingen' => $meldingen,
+            'currentUser' => $currentUser,
         ]);
     }
 }

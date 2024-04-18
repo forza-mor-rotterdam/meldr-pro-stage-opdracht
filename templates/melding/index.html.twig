@@ -26,7 +26,6 @@
             <th scope="col">Gebruiker ID</th>
             <th scope="col">Type Melding</th>
             <th scope="col">Inhoud</th>
-            <th scope="col">Locatie Naam</th> {# Voeg kolom toe voor locatie-naam #}
             <th scope="col">Datum/Tijd</th>
         </tr>
         </thead>
@@ -37,7 +36,6 @@
                 <td>{{ melding.userId }}</td>
                 <td>{{ melding.type_melding }}</td>
                 <td>{{ melding.inhoud }}</td>
-                <td>{{ melding.locatie_naam }}</td> {# Voeg locatie-naam toe aan de tabel #}
                 <td>{{ melding.datumTijd|date('Y-m-d H:i:s') }}</td>
             </tr>
         {% endfor %}

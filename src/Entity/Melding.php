@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\MeldingRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MeldingRepository::class)]
@@ -20,13 +19,10 @@ class Melding
     #[ORM\Column(length: 255)]
     public ?string $type_melding = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: 'text')]
     public ?string $inhoud = null;
 
-    #[ORM\Column(length: 255)] // New column for location name
-    public ?string $locatie_naam = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: 'datetime')]
     public ?\DateTimeInterface $datum_tijd = null;
 
     // Getter and setter for melding_id
@@ -77,19 +73,6 @@ class Melding
     public function setInhoud(string $inhoud): self
     {
         $this->inhoud = $inhoud;
-
-        return $this;
-    }
-
-    // Getter and setter for locatie_naam
-    public function getLocatieNaam(): ?string
-    {
-        return $this->locatie_naam;
-    }
-
-    public function setLocatieNaam(?string $locatie_naam): self
-    {
-        $this->locatie_naam = $locatie_naam;
 
         return $this;
     }

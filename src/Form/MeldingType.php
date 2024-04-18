@@ -24,12 +24,9 @@ class MeldingType extends AbstractType
             ])
             ->add('inhoud', TextareaType::class, [
                 'label' => 'Inhoud',
-            ])
-            ->add('locatie_naam', TextType::class, [ // Fix: Use correct namespace for TextType
-                'label' => 'Locatie Naam',
-                'required' => true, // Required field
             ]);
     }
+
 
     public function configureOptions(OptionsResolver $resolver)
     {
