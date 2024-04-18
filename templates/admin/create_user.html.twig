@@ -2,7 +2,8 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}Create User{% endblock %}
+{% block title %}Create User
+    {% include 'navbar.html.twig' %}{% endblock %}
 
 {% block body %}
     <h1>Create User</h1>
@@ -17,5 +18,4 @@
     {{ form_end(form) }}
 
     {# Button to go to all meldingen #}
-    <a href="{{ path('meldingen_overzicht') }}" class="btn btn-primary">Go to All Meldingen</a>
 {% endblock %}

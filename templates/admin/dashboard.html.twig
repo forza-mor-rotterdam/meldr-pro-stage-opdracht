@@ -2,7 +2,8 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}Admin Dashboard{% endblock %}
+{% block title %}Admin Dashboard
+    {% include 'navbar.html.twig' %}{% endblock %}
 
 {% block body %}
     <h1>Admin Dashboard</h1>
@@ -31,5 +32,4 @@
     </table>
 
     {# Button to go to all meldingen #}
-    <a href="{{ path('meldingen_overzicht') }}" class="btn btn-primary">Go to All Meldingen</a>
 {% endblock %}

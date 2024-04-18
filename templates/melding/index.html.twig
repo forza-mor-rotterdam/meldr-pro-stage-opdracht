@@ -1,6 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Alle Meldingen{% endblock %}
+
+{% block title %}Alle Meldingen
+    {% include 'navbar.html.twig' %}
+
+
+{% endblock %}
+
 
 {% block body %}
     <h1>Alle Meldingen</h1>
@@ -17,17 +23,7 @@
         <button type="submit">Filter</button>
     </form>
 
-    {# Knop voor meldingen toevoegen #}
-    <a href="{{ path('melding_toevoegen') }}" class="btn btn-primary mb-3">Melding Toevoegen</a>
 
-    {# Knop voor "Mijn Meldingen" #}
-    <a href="{{ path('mijn_meldingen') }}" class="btn btn-primary mb-3">Mijn Meldingen</a>
-
-    {# Knoppen voor het toevoegen van een nieuwe medewerker en bekijken van medewerkers #}
-    <div class="mb-3">
-        <a href="{{ path('admin_create_user') }}" class="btn btn-primary">Nieuwe Medewerker Toevoegen</a>
-        <a href="{{ path('admin_dashboard') }}" class="btn btn-primary">Medewerkers</a>
-    </div>
 
     {# Meldingstabel #}
     <table class="table">

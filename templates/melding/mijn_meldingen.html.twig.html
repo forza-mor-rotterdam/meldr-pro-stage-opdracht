@@ -1,12 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mijn Meldingen{% endblock %}
+{% block title %}Mijn Meldingen
+{% include 'navbar.html.twig' %}
+{% endblock %}
 
 {% block body %}
 <h1>Mijn Meldingen</h1>
 
 {# Knop voor terug naar alle meldingen #}
-<a href="{{ path('meldingen_overzicht') }}" class="btn btn-primary mb-3">Terug naar Alle Meldingen</a>
 
 {# Meldingstabel #}
 <table class="table">

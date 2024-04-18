@@ -32,3 +32,6 @@ categorie_overzicht:
     controller: 'App\Controller\CategorieController::overzicht'
     methods: ['GET']
 
+home:
+    path: /home
+    controller: App\Controller\HomeController::index
