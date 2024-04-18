@@ -3,9 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Melding;
-use App\Form\MeldingType;
+use App\Entity\AppUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,13 +26,30 @@ class MeldingController extends AbstractController
     {
         $melding = new Melding();
         $melding->setMeldingId((int)uniqid());
-        $melding->setUserId($this->getUser()->getId());
+        $melding->setUserId($this->getUser()->getId()); // Assuming the logged-in user is creating the melding
         $melding->setDatumTijd(new \DateTime());
 
         $form = $this->createForm(MeldingType::class, $melding);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile|null $afbeeldingFile */
+            $afbeeldingFile = $form->get('afbeelding')->getData();
+
+            if ($afbeeldingFile) {
+                // Generate a unique filename
+                $nieuweBestandsnaam = uniqid().'.'.$afbeeldingFile->getClientOriginalExtension();
+
+                // Move the file to the desired directory
+                $afbeeldingFile->move(
+                    $this->getParameter('afbeeldingen_directory'),
+                    $nieuweBestandsnaam
+                );
+
+                // Update the entity with the URL of the image
+                $melding->setAfbeeldingUrl($nieuweBestandsnaam);
+            }
+
             $this->entityManager->persist($melding);
             $this->entityManager->flush();
 
@@ -63,7 +81,7 @@ class MeldingController extends AbstractController
         $currentUser = $this->getUser();
         $meldingen = $this->entityManager->getRepository(Melding::class)->findBy(['user_id' => $currentUser->getId()]);
 
-        return $this->render('melding/mijn_meldingen.html.twig.html', [
+        return $this->render('melding/mijn_meldingen.html.twig', [
             'meldingen' => $meldingen,
         ]);
     }
@@ -71,18 +89,24 @@ class MeldingController extends AbstractController
     #[Route('/meldingen-overzicht', name: 'meldingen_overzicht')]
     public function overzicht(Request $request): Response
     {
-        $currentUser = $this->getUser();
-        $categorie = $request->query->get('type_melding');
-
-        if ($categorie) {
-            $meldingen = $this->entityManager->getRepository(Melding::class)->findBy(['type_melding' => $categorie]);
-        } else {
-            $meldingen = $this->entityManager->getRepository(Melding::class)->findAll();
-        }
+        $meldingen = $this->entityManager->getRepository(Melding::class)->findAll();
 
         return $this->render('melding/index.html.twig', [
             'meldingen' => $meldingen,
-            'currentUser' => $currentUser,
+        ]);
+    }
+
+    #[Route('/details/{id}', name: 'melding_details')]
+    public function details($id): Response
+    {
+        $melding = $this->entityManager->getRepository(Melding::class)->find($id);
+
+        if (!$melding) {
+            throw $this->createNotFoundException('Deze melding bestaat niet');
+        }
+
+        return $this->render('melding/meldingdetails.html.twig', [
+            'melding' => $melding,
         ]);
     }
 }

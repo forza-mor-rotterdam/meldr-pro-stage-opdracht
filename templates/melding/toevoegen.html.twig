@@ -1,13 +1,17 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Melding Toevoegen
-    {% include 'navbar.html.twig' %}{% endblock %}
+    {% include 'navbar.html.twig' %}
+{% endblock %}
 
 {% block body %}
     <h1>Melding Toevoegen</h1>
 
-    {# Formulier voor het toevoegen van een melding #}
     {{ form_start(form) }}
+    <div class="form-group">
+        {{ form_label(form.afbeelding) }}
+        {{ form_widget(form.afbeelding) }}
+    </div>
     <div class="form-group">
         {{ form_label(form.type_melding) }}
         {{ form_widget(form.type_melding) }}

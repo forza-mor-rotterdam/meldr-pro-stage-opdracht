@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\MeldingRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: MeldingRepository::class)]
 class Melding
@@ -13,8 +14,9 @@ class Melding
     #[ORM\Column(type: 'integer')]
     public ?int $melding_id = null;
 
-    #[ORM\Column]
-    public ?int $user_id = null;
+    #[ORM\ManyToOne(targetEntity: AppUser::class)]
+    #[ORM\JoinColumn(name:"user_id")]
+    public ?AppUser $user = null;
 
     #[ORM\Column(length: 255)]
     public ?string $type_melding = null;
@@ -24,6 +26,10 @@ class Melding
 
     #[ORM\Column(type: 'datetime')]
     public ?\DateTimeInterface $datum_tijd = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Assert\Url]
+    public ?string $afbeelding_url = null;
 
     // Getter and setter for melding_id
     public function getMeldingId(): ?int
@@ -39,14 +45,14 @@ class Melding
     }
 
     // Getter and setter for user_id
-    public function getUserId(): ?int
+    public function getUser(): AppUser
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(int $user_id): self
+    public function setUser(AppUser $user): self
     {
-        $this->user_id = $user_id;
+        $this->user = $user;
 
         return $this;
     }
@@ -86,6 +92,19 @@ class Melding
     public function setDatumTijd(\DateTimeInterface $datum_tijd): self
     {
         $this->datum_tijd = $datum_tijd;
+
+        return $this;
+    }
+
+    // Getter and setter for afbeelding_url
+    public function getAfbeeldingUrl(): ?string
+    {
+        return $this->afbeelding_url;
+    }
+
+    public function setAfbeeldingUrl(?string $afbeelding_url): self
+    {
+        $this->afbeelding_url = $afbeelding_url;
 
         return $this;
     }

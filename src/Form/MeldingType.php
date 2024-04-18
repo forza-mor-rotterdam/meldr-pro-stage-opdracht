@@ -5,8 +5,8 @@ namespace App\Form;
 use App\Entity\Melding;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType; // Fix: Import TextType
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,9 +24,13 @@ class MeldingType extends AbstractType
             ])
             ->add('inhoud', TextareaType::class, [
                 'label' => 'Inhoud',
+            ])
+            ->add('afbeelding', FileType::class, [
+                'label' => 'Afbeelding toevoegen',
+                'required' => false,
+                'mapped' => false,
             ]);
     }
-
 
     public function configureOptions(OptionsResolver $resolver)
     {

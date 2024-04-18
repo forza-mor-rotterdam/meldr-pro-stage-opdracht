@@ -1,44 +1,107 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Alle Meldingen
-    {% include 'navbar.html.twig' %}{% endblock %}
+{% block title %}Meldingen Overzicht{% endblock %}
 
 {% block body %}
-    <h1>Alle Meldingen</h1>
+    <h1>Meldingen Overzicht</h1>
 
-    {# Filterformulier #}
-    <form action="{{ path('meldingen_overzicht') }}" method="get">
-        <label for="type_melding">Type Melding:</label>
-        <select name="type_melding" id="type_melding">
-            <option value="">Alle</option>
-            <option value="afval">Afval</option>
-            <option value="verlichting">Verlichting</option>
-            <!-- Voeg hier andere type meldingen toe -->
-        </select>
-        <button type="submit">Filter</button>
-    </form>
-
-    {# Meldingstabel #}
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">Melding ID</th>
-            <th scope="col">Gebruiker ID</th>
-            <th scope="col">Type Melding</th>
-            <th scope="col">Inhoud</th>
-            <th scope="col">Datum/Tijd</th>
+            <th>ID</th>
+            <th>Type Melding</th>
+            <th>Inhoud</th>
+            <th>Afbeelding</th>
+            <th>Datum/Tijd</th>
+            <th>Gebruiker</th>
+            <th>Actie</th>
         </tr>
         </thead>
         <tbody>
         {% for melding in meldingen %}
             <tr>
-                <td>{{ melding.meldingId }}</td>
-                <td>{{ melding.userId }}</td>
+                <td>{{ melding.melding_id }}</td>
                 <td>{{ melding.type_melding }}</td>
                 <td>{{ melding.inhoud }}</td>
-                <td>{{ melding.datumTijd|date('Y-m-d H:i:s') }}</td>
+                <td>
+                    {% if melding.afbeelding_url %}
+                        <a href="#" class="image-link">
+                            <img src="{{ asset('afbeeldingen/' ~ melding.afbeelding_url) }}" alt="Afbeelding" style="max-width: 100px;">
+                        </a>
+                    {% else %}
+                        Geen afbeelding beschikbaar
+                    {% endif %}
+                </td>
+                <td>{{ melding.datum_tijd|date('d-m-Y H:i') }}</td>
+                <td>{{ melding.user.username }}</td>
+                <td>
+                    <a href="{{ path('melding_details', {'id': melding.melding_id}) }}" class="btn btn-primary">Details</a>
+                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="expandedImg">
+    </div>
+
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 100px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+
+    <script>
+        var modal = document.getElementById("imageModal");
+        var modalImg = document.getElementById("expandedImg");
+        var links = document.getElementsByClassName("image-link");
+
+        for (var i = 0; i < links.length; i++) {
+            links[i].onclick = function () {
+                modal.style.display = "block";
+                modalImg.src = this.children[0].src;
+            };
+        }
+
+        var span = document.getElementsByClassName("close")[0];
+        span.onclick = function () {
+            modal.style.display = "none";
+        };
+    </script>
 {% endblock %}
