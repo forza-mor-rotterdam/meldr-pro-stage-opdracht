@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Melding Details{% include 'navbar.html.twig' %}{% endblock %}
+{% block title %}
+    Melding Details
+    {% include 'navbar.html.twig' %}
+{% endblock %}
 
 {% block body %}
     <h1>Melding Details</h1>
@@ -9,6 +12,11 @@
     <p><strong>Type Melding:</strong> {{ melding.categorie.naam }}</p>
     <p><strong>Inhoud:</strong> {{ melding.inhoud }}</p>
     <p><strong>Datum/Tijd:</strong> {{ melding.datum_tijd|date('d-m-Y H:i') }}</p>
+
+    {% if melding.afbeelding_url %}
+        <h2>Afbeelding</h2>
+        <img src="{{ asset('uploads/afbeeldingen/' ~ melding.afbeelding_url) }}" alt="Afbeelding bij melding">
+    {% endif %}
 
     {% if melding.user %}
         <h2>Contactgegevens</h2>
