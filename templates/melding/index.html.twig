@@ -15,6 +15,7 @@
             <th>Afbeelding</th>
             <th>Datum/Tijd</th>
             <th>Gebruiker</th>
+            <th>Status</th>
             <th>Actie</th>
         </tr>
         </thead>
@@ -35,6 +36,13 @@
                 </td>
                 <td>{{ melding.datum_tijd|date('d-m-Y H:i') }}</td>
                 <td>{{ melding.user.username }}</td>
+                <td>
+                    {% if melding.afgehandeld %}
+                        Done
+                    {% else %}
+                        Not done
+                    {% endif %}
+                </td>
                 <td>
                     <a href="{{ path('melding_details', {'id': melding.melding_id}) }}" class="btn btn-primary">Details</a>
                 </td>

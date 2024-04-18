@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Melding Details
-    {% include 'navbar.html.twig' %}{% endblock %}
+{% block title %}Melding Details{% include 'navbar.html.twig' %}{% endblock %}
 
 {% block body %}
     <h1>Melding Details</h1>
@@ -12,11 +11,19 @@
     <p><strong>Datum/Tijd:</strong> {{ melding.datum_tijd|date('d-m-Y H:i') }}</p>
 
     {% if melding.user %}
-        <h2>contactgegevens</h2>
+        <h2>Contactgegevens</h2>
         <p><strong>Naam:</strong> {{ melding.user.username }}</p>
         {% if melding.user.email %}
             <p><strong>E-mail:</strong> {{ melding.user.email }}</p>
         {% endif %}
         <p><strong>Gegeven naam:</strong> {{ melding.user.givenName }}</p>
+    {% endif %}
+
+    {% if not melding.afgehandeld %}
+        <form action="{{ path('melding_afhandelen', {'id': melding.melding_id}) }}" method="post">
+            <button type="submit" class="btn btn-primary">Afhandelen</button>
+        </form>
+    {% else %}
+        <p><em>Deze melding is al afgehandeld.</em></p>
     {% endif %}
 {% endblock %}

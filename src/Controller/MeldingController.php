@@ -3,14 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Melding;
-use App\Entity\AppUser;
+use App\Form\MeldingType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Form\MeldingType;
 
 #[Route('/melding')]
 class MeldingController extends AbstractController
@@ -33,7 +32,6 @@ class MeldingController extends AbstractController
         $form = $this->createForm(MeldingType::class, $melding);
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile|null $afbeeldingFile */
             $afbeeldingFile = $form->get('afbeelding')->getData();
@@ -43,10 +41,8 @@ class MeldingController extends AbstractController
                 $nieuweBestandsnaam = uniqid().'.'.$afbeeldingFile->getClientOriginalExtension();
 
                 // Move the file to the desired directory
-
                 $afbeeldingFile->move(
                     $this->getParameter('afbeeldingen_directory'),
-
                     $nieuweBestandsnaam
                 );
 
@@ -112,5 +108,27 @@ class MeldingController extends AbstractController
         return $this->render('melding/meldingdetails.html.twig', [
             'melding' => $melding,
         ]);
+    }
+
+    #[Route('/afhandelen/{id}', name: 'melding_afhandelen')]
+    public function afhandelen($id): Response
+    {
+        // Zoek de melding in de database op basis van de ID
+        $melding = $this->entityManager->getRepository(Melding::class)->find($id);
+
+        // Controleer of de melding bestaat
+        if (!$melding) {
+            // Gooi een 404 Not Found uitzondering als de melding niet bestaat
+            throw $this->createNotFoundException('Deze melding bestaat niet');
+        }
+
+        // Markeer de melding als afgehandeld door de afgehandeld-vlag op true in te stellen
+        $melding->setAfgehandeld(true);
+
+        // Sla de wijzigingen op in de database
+        $this->entityManager->flush();
+
+        // Nadat de melding is afgehandeld, leid de gebruiker om naar de detailspagina van de melding
+        return $this->redirectToRoute('melding_details', ['id' => $melding->getMeldingId()]);
     }
 }

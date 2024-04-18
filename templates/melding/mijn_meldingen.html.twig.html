@@ -1,13 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mijn Meldingen
-{% include 'navbar.html.twig' %}
-{% endblock %}
+{% block title %}Mijn Meldingen{% endblock %}
 
 {% block body %}
 <h1>Mijn Meldingen</h1>
 
 {# Knop voor terug naar alle meldingen #}
+<a href="{{ path('meldingen_overzicht') }}" class="btn btn-primary mb-3">Terug naar alle meldingen</a>
 
 {# Meldingstabel #}
 <table class="table">
@@ -17,23 +16,33 @@
     <th scope="col">Type Melding</th>
     <th scope="col">Inhoud</th>
     <th scope="col">Datum/Tijd</th>
-    <th scope="col">afbeelding</th>
+    <th scope="col">Afbeelding</th>
+    <th scope="col">Status</th>
   </tr>
   </thead>
   <tbody>
   {% for melding in meldingen %}
   <tr>
-    <td>{{ melding.meldingid }}</td>
+    <td>{{ melding.melding_id }}</td>
     <td>{{ melding.categorie.naam }}</td>
     <td>{{ melding.inhoud }}</td>
     <td>{{ melding.datumTijd|date('Y-m-d H:i:s') }}</td>
-    <td> {% if melding.afbeelding_url %}
+    <td>
+      {% if melding.afbeelding_url %}
       <a href="#" class="image-link">
         <img src="{{ asset('/uploads/afbeeldingen/' ~ melding.afbeelding_url) }}" alt="Afbeelding" style="max-width: 100px;">
       </a>
       {% else %}
       Geen afbeelding beschikbaar
-      {% endif %}</td>
+      {% endif %}
+    </td>
+    <td>
+      {% if melding.afgehandeld %}
+      Done
+      {% else %}
+      Not done
+      {% endif %}
+    </td>
   </tr>
   {% endfor %}
   </tbody>
