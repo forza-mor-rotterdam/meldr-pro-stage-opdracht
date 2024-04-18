@@ -1,5 +1,3 @@
-{# templates/melding/toevoegen.html.twig #}
-
 {% extends 'base.html.twig' %}
 
 {% block title %}Melding Toevoegen
@@ -7,9 +5,8 @@
 
 {% block body %}
     <h1>Melding Toevoegen</h1>
-    {% if last_melding_id is defined %}
-        <div class="alert alert-success">Je melding (ID: {{ last_melding_id }}) is toegevoegd!</div>
-    {% endif %}
+
+    {# Formulier voor het toevoegen van een melding #}
     {{ form_start(form) }}
     <div class="form-group">
         {{ form_label(form.type_melding) }}
@@ -18,6 +15,10 @@
     <div class="form-group">
         {{ form_label(form.inhoud) }}
         {{ form_widget(form.inhoud) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(form.locatie_naam) }}
+        {{ form_widget(form.locatie_naam) }}
     </div>
     <button type="submit" class="btn btn-primary">Versturen</button>
     {{ form_end(form) }}

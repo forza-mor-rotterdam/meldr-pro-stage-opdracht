@@ -23,6 +23,9 @@ class Melding
     #[ORM\Column(type: Types::TEXT)]
     public ?string $inhoud = null;
 
+    #[ORM\Column(length: 255)] // New column for location name
+    public ?string $locatie_naam = null;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     public ?\DateTimeInterface $datum_tijd = null;
 
@@ -74,6 +77,19 @@ class Melding
     public function setInhoud(string $inhoud): self
     {
         $this->inhoud = $inhoud;
+
+        return $this;
+    }
+
+    // Getter and setter for locatie_naam
+    public function getLocatieNaam(): ?string
+    {
+        return $this->locatie_naam;
+    }
+
+    public function setLocatieNaam(?string $locatie_naam): self
+    {
+        $this->locatie_naam = $locatie_naam;
 
         return $this;
     }

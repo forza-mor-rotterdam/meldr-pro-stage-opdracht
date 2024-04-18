@@ -24,19 +24,22 @@ class MeldingController extends AbstractController
     public function toevoegen(Request $request): Response
     {
         $melding = new Melding();
-        $melding->setMeldingId((int)uniqid()); // Unieke melding ID genereren
-        $melding->setUserId($this->getUser()->getId()); // Gebruikers-ID instellen
-        $melding->setDatumTijd(new \DateTime()); // Huidige datum en tijd instellen
+        $melding->setMeldingId((int)uniqid());
+        $melding->setUserId($this->getUser()->getId());
+        $melding->setDatumTijd(new \DateTime());
 
         $form = $this->createForm(MeldingType::class, $melding);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Gebruik de EntityManager om de melding op te slaan
+            // Haal de locatie-naam op uit het formulier
+            $locatieNaam = $form->get('locatie_naam')->getData();
+            // Stel de locatie-naam in voor de melding
+            $melding->setLocatieNaam($locatieNaam);
+
             $this->entityManager->persist($melding);
             $this->entityManager->flush();
 
-            // Redirect naar de bevestigingspagina
             return $this->redirectToRoute('melding_bevestiging', ['id' => $melding->getMeldingId()]);
         }
 
@@ -50,10 +53,8 @@ class MeldingController extends AbstractController
     {
         $currentUser = $this->getUser();
 
-        // Haal de geselecteerde categorie op uit de queryparameters van het verzoek
         $categorie = $request->query->get('type_melding');
 
-        // Haal alle meldingen op of filter op de geselecteerde categorie
         if ($categorie) {
             $meldingen = $this->entityManager->getRepository(Melding::class)->findBy(['type_melding' => $categorie]);
         } else {
@@ -80,7 +81,6 @@ class MeldingController extends AbstractController
     #[Route('/bevestiging/{id}', name: 'melding_bevestiging')]
     public function bevestiging($id): Response
     {
-        // Haal de melding op basis van melding_id
         $melding = $this->entityManager->getRepository(Melding::class)->findOneBy(['melding_id' => $id]);
 
         if (!$melding) {
