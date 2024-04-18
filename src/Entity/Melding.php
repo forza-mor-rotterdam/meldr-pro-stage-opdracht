@@ -18,11 +18,9 @@ class Melding
     #[ORM\JoinColumn(name:"user_id")]
     public ?AppUser $user = null;
 
-
     #[ORM\ManyToOne(targetEntity: Categorie::class)]
     #[ORM\JoinColumn(name:"categorie_id", referencedColumnName: 'id')]
     public ?Categorie $categorie = null;
-
 
     #[ORM\Column(type: 'text')]
     public ?string $inhoud = null;
@@ -36,6 +34,12 @@ class Melding
     #[ORM\Column(nullable: true)]
     #[Assert\Url]
     public ?string $afbeelding_url = null;
+
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 8, nullable: true)]
+    public ?float $latitude = null;
+
+    #[ORM\Column(type: 'decimal', precision: 11, scale: 8, nullable: true)]
+    public ?float $longitude = null;
 
     // Getter and setter for melding_id
     public function getMeldingId(): ?int
@@ -71,8 +75,8 @@ class Melding
     public function setCategorie(Categorie $categorie): self{
         $this->categorie = $categorie;
         return $this;
+    }
 
-}
     // Getter and setter for afgehandeld
     public function getAfgehandeld(): bool
     {
@@ -121,6 +125,32 @@ class Melding
     public function setAfbeeldingUrl(?string $afbeelding_url): self
     {
         $this->afbeelding_url = $afbeelding_url;
+
+        return $this;
+    }
+
+    // Getter and setter for latitude
+    public function getLatitude(): ?float
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(?float $latitude): self
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    // Getter and setter for longitude
+    public function getLongitude(): ?float
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(?float $longitude): self
+    {
+        $this->longitude = $longitude;
 
         return $this;
     }

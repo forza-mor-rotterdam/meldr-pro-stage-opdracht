@@ -1,8 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Melding Toevoegen
-    {% include 'navbar.html.twig' %}
-{% endblock %}
+    {% include 'navbar.html.twig' %}{% endblock %}
 
 {% block body %}
     <h1>Melding Toevoegen</h1>
@@ -19,6 +18,20 @@
     <div class="form-group">
         {{ form_label(form.inhoud) }}
         {{ form_widget(form.inhoud) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(form.latitude, 'Latitude') }}
+        {{ form_widget(form.latitude) }}
+        {% if form_errors(form.latitude) %}
+            <div class="invalid-feedback">{{ form_errors(form.latitude) }}</div>
+        {% endif %}
+    </div>
+    <div class="form-group">
+        {{ form_label(form.longitude, 'Longitude') }}
+        {{ form_widget(form.longitude) }}
+        {% if form_errors(form.longitude) %}
+            <div class="invalid-feedback">{{ form_errors(form.longitude) }}</div>
+        {% endif %}
     </div>
     <button type="submit" class="btn btn-primary">Versturen</button>
     {{ form_end(form) }}

@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mijn Meldingen{% endblock %}
+{% block title %}Mijn Meldingen
+{% include 'navbar.html.twig' %}{% endblock %}
 
 {% block body %}
 <h1>Mijn Meldingen</h1>
 
-{# Knop voor terug naar alle meldingen #}
-<a href="{{ path('meldingen_overzicht') }}" class="btn btn-primary mb-3">Terug naar alle meldingen</a>
+
 
 {# Meldingstabel #}
 <table class="table">
@@ -18,6 +18,7 @@
     <th scope="col">Datum/Tijd</th>
     <th scope="col">Afbeelding</th>
     <th scope="col">Status</th>
+    <th scope="col">Details</th>
   </tr>
   </thead>
   <tbody>
@@ -36,12 +37,15 @@
       Geen afbeelding beschikbaar
       {% endif %}
     </td>
+
     <td>
       {% if melding.afgehandeld %}
       Done
       {% else %}
       Not done
       {% endif %}
+    </td>
+    <td>                    <a href="{{ path('melding_details', {'id': melding.melding_id}) }}" class="btn btn-primary">Details</a>
     </td>
   </tr>
   {% endfor %}

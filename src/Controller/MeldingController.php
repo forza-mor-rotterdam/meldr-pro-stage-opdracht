@@ -24,38 +24,48 @@ class MeldingController extends AbstractController
     #[Route('/toevoegen', name: 'melding_toevoegen')]
     public function toevoegen(Request $request): Response
     {
+        // Maak een nieuwe melding entiteit aan
         $melding = new Melding();
+        // Stel een unieke ID in voor de melding
         $melding->setMeldingId((int)uniqid());
-        $melding->setUser($this->getUser()); // Assuming the logged-in user is creating the melding
+        // Gebruik de ingelogde gebruiker als de eigenaar van de melding
+        $melding->setUser($this->getUser());
+        // Stel de huidige datum en tijd in voor de melding
         $melding->setDatumTijd(new \DateTime());
 
+        // Maak een formulier voor het toevoegen van meldingen
         $form = $this->createForm(MeldingType::class, $melding);
         $form->handleRequest($request);
 
+        // Verwerk het ingediende formulier
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile|null $afbeeldingFile */
             $afbeeldingFile = $form->get('afbeelding')->getData();
 
+            // Verwerk de geüploade afbeelding
             if ($afbeeldingFile) {
-                // Generate a unique filename
+                // Genereer een unieke bestandsnaam
                 $nieuweBestandsnaam = uniqid().'.'.$afbeeldingFile->getClientOriginalExtension();
-
-                // Move the file to the desired directory
+                // Verplaats het bestand naar de gewenste map
                 $afbeeldingFile->move(
                     $this->getParameter('afbeeldingen_directory'),
                     $nieuweBestandsnaam
                 );
-
-                // Update the entity with the URL of the image
+                // Werk de entiteit bij met de URL van de afbeelding
                 $melding->setAfbeeldingUrl($nieuweBestandsnaam);
             }
 
+
+
+            // Sla de melding op in de database
             $this->entityManager->persist($melding);
             $this->entityManager->flush();
 
+            // Stuur de gebruiker door naar de bevestigingspagina
             return $this->redirectToRoute('melding_bevestiging', ['id' => $melding->getMeldingId()]);
         }
 
+        // Toon het formulier voor het toevoegen van meldingen
         return $this->render('melding/toevoegen.html.twig', [
             'form' => $form->createView(),
         ]);
@@ -64,12 +74,16 @@ class MeldingController extends AbstractController
     #[Route('/bevestiging/{id}', name: 'melding_bevestiging')]
     public function bevestiging($id): Response
     {
+        // Zoek de melding in de database op basis van de ID
         $melding = $this->entityManager->getRepository(Melding::class)->findOneBy(['melding_id' => $id]);
 
+        // Controleer of de melding bestaat
         if (!$melding) {
+            // Gooi een 404 Not Found uitzondering als de melding niet bestaat
             throw $this->createNotFoundException('Deze melding bestaat niet');
         }
 
+        // Toon de bevestigingspagina met de meldingsdetails
         return $this->render('melding/bevestiging.html.twig', [
             'melding' => $melding,
         ]);
@@ -78,9 +92,12 @@ class MeldingController extends AbstractController
     #[Route('/mijn-meldingen', name: 'mijn_meldingen')]
     public function mijnMeldingen(): Response
     {
+        // Haal de huidige gebruiker op
         $currentUser = $this->getUser();
+        // Zoek alle meldingen van de huidige gebruiker in de database
         $meldingen = $this->entityManager->getRepository(Melding::class)->findBy(['user' => $currentUser]);
 
+        // Toon de pagina met meldingen van de huidige gebruiker
         return $this->render('melding/mijn_meldingen.html.twig.html', [
             'meldingen' => $meldingen,
         ]);
@@ -89,8 +106,10 @@ class MeldingController extends AbstractController
     #[Route('/meldingen-overzicht', name: 'meldingen_overzicht')]
     public function overzicht(Request $request): Response
     {
+        // Haal alle meldingen op uit de database
         $meldingen = $this->entityManager->getRepository(Melding::class)->findAll();
 
+        // Toon een overzichtspagina met alle meldingen
         return $this->render('melding/index.html.twig', [
             'meldingen' => $meldingen,
         ]);
@@ -99,12 +118,16 @@ class MeldingController extends AbstractController
     #[Route('/details/{id}', name: 'melding_details')]
     public function details($id): Response
     {
+        // Zoek de melding in de database op basis van de ID
         $melding = $this->entityManager->getRepository(Melding::class)->find($id);
 
+        // Controleer of de melding bestaat
         if (!$melding) {
+            // Gooi een 404 Not Found uitzondering als de melding niet bestaat
             throw $this->createNotFoundException('Deze melding bestaat niet');
         }
 
+        // Toon de detailpagina van de melding
         return $this->render('melding/meldingdetails.html.twig', [
             'melding' => $melding,
         ]);
