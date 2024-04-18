@@ -22,12 +22,12 @@
         {% for melding in meldingen %}
             <tr>
                 <td>{{ melding.melding_id }}</td>
-                <td>{{ melding.type_melding }}</td>
+                <td>{{ melding.categorie.naam }}</td>
                 <td>{{ melding.inhoud }}</td>
                 <td>
                     {% if melding.afbeelding_url %}
                         <a href="#" class="image-link">
-                            <img src="{{ asset('afbeeldingen/' ~ melding.afbeelding_url) }}" alt="Afbeelding" style="max-width: 100px;">
+                            <img src="{{ asset('/uploads/afbeeldingen/' ~ melding.afbeelding_url) }}" alt="Afbeelding" style="max-width: 100px;">
                         </a>
                     {% else %}
                         Geen afbeelding beschikbaar

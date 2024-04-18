@@ -36,6 +36,7 @@ class UserCreateCommand extends Command
         $this
             ->addArgument('username', InputArgument::REQUIRED)
             ->addArgument('givenName', InputArgument::REQUIRED)
+            ->addArgument('email', InputArgument::REQUIRED)
             ->addArgument('password', InputArgument::OPTIONAL)
         ;
     }
@@ -53,6 +54,7 @@ class UserCreateCommand extends Command
         $user = new AppUser();
         $user->setUsername($input->getArgument('username'));
         $user->setGivenName($input->getArgument('givenName'));
+        $user->setEmail($input->getArgument('email'));
         $user->setPassword($this->passwordHasher->hashPassword($user, $password));
 
         $this->em->persist($user);

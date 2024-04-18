@@ -18,11 +18,17 @@ class Melding
     #[ORM\JoinColumn(name:"user_id")]
     public ?AppUser $user = null;
 
-    #[ORM\Column(length: 255)]
-    public ?string $type_melding = null;
+
+    #[ORM\ManyToOne(targetEntity: Categorie::class)]
+    #[ORM\JoinColumn(name:"categorie_id", referencedColumnName: 'id')]
+    public ?Categorie $categorie = null;
+
 
     #[ORM\Column(type: 'text')]
     public ?string $inhoud = null;
+
+    #[ORM\Column(type: 'boolean')]
+    public bool $afgehandeld = false; // Added boolean field
 
     #[ORM\Column(type: 'datetime')]
     public ?\DateTimeInterface $datum_tijd = null;
@@ -57,15 +63,25 @@ class Melding
         return $this;
     }
 
-    // Getter and setter for type_melding
-    public function getTypeMelding(): ?string
-    {
-        return $this->type_melding;
+    //getter and setter for categorie
+    public function getCategorie(): ?Categorie{
+        return $this->categorie;
     }
 
-    public function setTypeMelding(string $type_melding): self
+    public function setCategorie(Categorie $categorie): self{
+        $this->categorie = $categorie;
+        return $this;
+
+}
+    // Getter and setter for afgehandeld
+    public function getAfgehandeld(): bool
     {
-        $this->type_melding = $type_melding;
+        return $this->afgehandeld;
+    }
+
+    public function setAfgehandeld(bool $afgehandeld): self
+    {
+        $this->afgehandeld = $afgehandeld;
 
         return $this;
     }

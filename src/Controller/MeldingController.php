@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Form\MeldingType;
 
 #[Route('/melding')]
 class MeldingController extends AbstractController
@@ -26,11 +27,12 @@ class MeldingController extends AbstractController
     {
         $melding = new Melding();
         $melding->setMeldingId((int)uniqid());
-        $melding->setUserId($this->getUser()->getId()); // Assuming the logged-in user is creating the melding
+        $melding->setUser($this->getUser()); // Assuming the logged-in user is creating the melding
         $melding->setDatumTijd(new \DateTime());
 
         $form = $this->createForm(MeldingType::class, $melding);
         $form->handleRequest($request);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile|null $afbeeldingFile */
@@ -41,8 +43,10 @@ class MeldingController extends AbstractController
                 $nieuweBestandsnaam = uniqid().'.'.$afbeeldingFile->getClientOriginalExtension();
 
                 // Move the file to the desired directory
+
                 $afbeeldingFile->move(
                     $this->getParameter('afbeeldingen_directory'),
+
                     $nieuweBestandsnaam
                 );
 
@@ -79,9 +83,9 @@ class MeldingController extends AbstractController
     public function mijnMeldingen(): Response
     {
         $currentUser = $this->getUser();
-        $meldingen = $this->entityManager->getRepository(Melding::class)->findBy(['user_id' => $currentUser->getId()]);
+        $meldingen = $this->entityManager->getRepository(Melding::class)->findBy(['user' => $currentUser]);
 
-        return $this->render('melding/mijn_meldingen.html.twig', [
+        return $this->render('melding/mijn_meldingen.html.twig.html', [
             'meldingen' => $meldingen,
         ]);
     }

@@ -7,12 +7,12 @@
     <h1>Melding Details</h1>
 
     <p><strong>ID:</strong> {{ melding.melding_id }}</p>
-    <p><strong>Type Melding:</strong> {{ melding.type_melding }}</p>
+    <p><strong>Type Melding:</strong> {{ melding.categorie.naam }}</p>
     <p><strong>Inhoud:</strong> {{ melding.inhoud }}</p>
     <p><strong>Datum/Tijd:</strong> {{ melding.datum_tijd|date('d-m-Y H:i') }}</p>
 
     {% if melding.user %}
-        <h2>Gebruikersgegevens</h2>
+        <h2>contactgegevens</h2>
         <p><strong>Naam:</strong> {{ melding.user.username }}</p>
         {% if melding.user.email %}
             <p><strong>E-mail:</strong> {{ melding.user.email }}</p>

@@ -2,7 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Categorie;
 use App\Entity\Melding;
+use Doctrine\ORM\Mapping\Entity;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -15,12 +18,10 @@ class MeldingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('type_melding', ChoiceType::class, [
-                'choices' => [
-                    'Afval' => 'Afval',
-                    'Verlichting' => 'Verlichting',
-                ],
+            ->add('categorie', EntityType::class, [
+               'class' => Categorie::class,
                 'label' => 'Type Melding',
+                'choice_label' => 'naam'
             ])
             ->add('inhoud', TextareaType::class, [
                 'label' => 'Inhoud',
