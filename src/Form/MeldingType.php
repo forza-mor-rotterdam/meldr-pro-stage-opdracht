@@ -7,6 +7,7 @@ use App\Entity\Melding;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType; // Added for latitude and longitude
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,15 +26,13 @@ class MeldingType extends AbstractType
             ->add('inhoud', TextareaType::class, [
                 'label' => 'Inhoud',
             ])
-            ->add('latitude', NumberType::class, [ // Added latitude field
+            ->add('latitude', HiddenType::class, [ // Added latitude field
                 'label' => 'Latitude',
                 'required' => true, // Adjust as needed
-                'scale' => 6, // Number of decimal places
             ])
-            ->add('longitude', NumberType::class, [ // Added longitude field
+            ->add('longitude',HiddenType::class, [ // Added longitude field
                 'label' => 'Longitude',
                 'required' => true, // Adjust as needed
-                'scale' => 6, // Number of decimal places
             ])
             ->add('afbeelding', FileType::class, [
                 'label' => 'Afbeelding toevoegen',
