@@ -32,7 +32,7 @@
                 {% if melding.afgehandeld %}
                     <p class="mt-4"><em>Deze melding is al afgehandeld.</em></p>
                     {% if melding.afbeelding_url_eindresultaat %}
-                        <h2 class="mt-4">Afbeelding bij Afhandeling</h2>
+                        <h3 class="mt-4">Eindresultaat Foto</h3>
                         <img src="{{ asset('uploads/afbeeldingen/' ~ melding.afbeelding_url_eindresultaat) }}" class="img-fluid" alt="Afbeelding bij afhandeling">
                     {% endif %}
                 {% else %}
