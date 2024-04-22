@@ -1,15 +1,15 @@
-{# templates/melding/bevestiging.html.twig #}
-
 {% extends 'base.html.twig' %}
 
-{% block title %}Melding Toegevoegd
+{% block title %}
     {% include 'navbar.html.twig' %}
 {% endblock %}
 
 {% block body %}
-    <h1>Melding Toegevoegd</h1>
-    <div class="alert alert-success">Melding toegevoegd met melding ID: {{ melding.getMeldingID() }}</div>
-    <p>Wat wil je nu doen?</p>
-    <a href="{{ path('melding_toevoegen') }}" class="btn btn-primary">Nieuwe Melding Toevoegen</a>
-    <a href="{{ path('meldingen_overzicht') }}" class="btn btn-secondary">Terug naar Meldingenoverzicht</a>
+    <div class="container">
+        <h1 class="mt-4">Melding Toegevoegd</h1>
+        <div class="alert alert-success">Melding toegevoegd met melding ID: {{ melding.getMeldingID() }}</div>
+        <p class="mt-4">Wat wil je nu doen?</p>
+        <a href="{{ path('melding_toevoegen') }}" class="btn btn-primary mr-2" style="background-color: #28a745; border-color: #28a745;">Nieuwe Melding Toevoegen</a>
+        <a href="{{ path('meldingen_overzicht') }}" class="btn btn-secondary" style="background-color: #28a745; border-color: #28a745;">Terug naar Meldingenoverzicht</a>
+    </div>
 {% endblock %}

@@ -1,9 +1,33 @@
-{# templates/admin/dashboard.html.twig #}
-
 {% extends 'base.html.twig' %}
 
-{% block title %}Admin Dashboard
-    {% include 'navbar.html.twig' %}{% endblock %}
+{% block title %}
+    Admin Dashboard
+    {% include 'navbar.html.twig' %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        body {
+            background-color: #ffffff; /* White background */
+            padding: 20px; /* Add some padding for better spacing */
+        }
+
+        table {
+            width: 100%; /* Make the table full width */
+            border-collapse: collapse; /* Collapse table borders */
+        }
+
+        th, td {
+            padding: 10px; /* Add padding to table cells */
+            border-bottom: 1px solid #ddd; /* Add bottom border to table rows */
+        }
+
+        th {
+            background-color: #f2f2f2; /* Light gray background for table headers */
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
     <h1>Admin Dashboard</h1>
@@ -15,7 +39,6 @@
             <th>Username</th>
             <th>Email</th>
             <th>Given Name</th>
-            <!-- Add more columns if needed -->
         </tr>
         </thead>
         <tbody>
@@ -25,11 +48,9 @@
                 <td>{{ user.username }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.givenName }}</td>
-                <!-- Add more columns if needed -->
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    {# Button to go to all meldingen #}
 {% endblock %}

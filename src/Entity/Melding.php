@@ -25,6 +25,9 @@ class Melding
     #[ORM\Column(type: 'text')]
     public ?string $inhoud = null;
 
+    public ?string $afbeelding_url_eindresultaat = null; // New property for end result picture
+
+
     #[ORM\Column(type: 'boolean')]
     public bool $afgehandeld = false; // Added boolean field
 
@@ -154,4 +157,23 @@ class Melding
 
         return $this;
     }
+
+
+    public function getAfbeeldingUrlEindresultaat(): ?string
+    {
+        return $this->afbeelding_url_eindresultaat;
+    }
+
+    public function setAfbeeldingUrlEindresultaat(?string $afbeelding_url_eindresultaat): self
+    {
+        $this->afbeelding_url_eindresultaat = $afbeelding_url_eindresultaat;
+
+        return $this;
+    }
+
+
+
+
 }
+
+

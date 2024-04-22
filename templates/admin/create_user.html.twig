@@ -1,9 +1,38 @@
-{# templates/admin/create_user.html.twig #}
-
 {% extends 'base.html.twig' %}
 
-{% block title %}Create User
-    {% include 'navbar.html.twig' %}{% endblock %}
+{% block title %}
+    Create User
+    {% include 'navbar.html.twig' %}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <!-- Include Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #ffffff; /* White background */
+            padding: 20px; /* Add some padding for better spacing */
+        }
+
+        form {
+            max-width: 400px; /* Limit the width of the form */
+            margin: auto; /* Center the form horizontally */
+        }
+
+        button[type="submit"] {
+            background-color: #28a745; /* Green button color */
+            color: #ffffff; /* White text color */
+            border: none; /* Remove button border */
+            padding: 10px 20px; /* Add some padding for better appearance */
+            cursor: pointer; /* Add cursor pointer on hover */
+        }
+
+        button[type="submit"]:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
     <h1>Create User</h1>
@@ -16,6 +45,4 @@
 
     <button type="submit">Create</button>
     {{ form_end(form) }}
-
-    {# Button to go to all meldingen #}
 {% endblock %}

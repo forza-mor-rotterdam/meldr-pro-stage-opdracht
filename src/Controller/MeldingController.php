@@ -98,7 +98,7 @@ class MeldingController extends AbstractController
         $meldingen = $this->entityManager->getRepository(Melding::class)->findBy(['user' => $currentUser]);
 
         // Toon de pagina met meldingen van de huidige gebruiker
-        return $this->render('melding/mijn_meldingen.html.twig.html', [
+        return $this->render('melding/mijn_meldingen.html.twig', [
             'meldingen' => $meldingen,
         ]);
     }

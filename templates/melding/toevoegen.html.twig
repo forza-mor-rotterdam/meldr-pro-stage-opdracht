@@ -2,58 +2,86 @@
 
 {% block title %}
     {% include 'navbar.html.twig' %}
-    Melding Toevoegen
 {% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""/>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
           crossorigin=""/>
     <style>
+        body {
+            background-color: #ffffff; /* White background */
+            padding: 20px; /* Add padding for better spacing */
+        }
+
+        .container {
+            max-width: 600px; /* Limit the width of the container */
+            margin: auto; /* Center the container horizontally */
+        }
+
         #map {
             height: 400px;
             width: 100%;
+            margin-bottom: 20px; /* Add some bottom margin for spacing */
+        }
+
+        .form-group {
+            margin-bottom: 20px; /* Add bottom margin for form groups */
+        }
+
+        .btn-primary {
+            background-color: #28a745; /* Green button color */
+            border-color: #28a745; /* Green button border color */
+        }
+
+        .btn-primary:hover {
+            background-color: #218838; /* Darker green on hover */
+            border-color: #218838; /* Darker green border on hover */
         }
     </style>
-    <!-- Make sure you put this AFTER Leaflet's CSS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-            crossorigin=""></script>
 {% endblock %}
 
 {% block body %}
-    <h1>Melding Toevoegen</h1>
-    <div id="map"></div>
+    <div class="container">
+        <h1 class="mt-4">Melding Toevoegen</h1>
+        <div id="map" class="mb-4"></div>
 
-    {{ form_start(form) }}
-    <div class="form-group">
-        {{ form_label(form.afbeelding) }}
-        {{ form_widget(form.afbeelding) }}
+        {{ form_start(form) }}
+        <div class="form-group">
+            {{ form_label(form.afbeelding) }}
+            {{ form_widget(form.afbeelding) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.categorie) }}
+            {{ form_widget(form.categorie) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.inhoud) }}
+            {{ form_widget(form.inhoud) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.latitude, 'Latitude') }}
+            {{ form_widget(form.latitude, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="form-group">
+            {{ form_label(form.longitude, 'Longitude') }}
+            {{ form_widget(form.longitude, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <button type="submit" class="btn btn-primary">Versturen</button>
+        {{ form_end(form) }}
     </div>
-    <div class="form-group">
-        {{ form_label(form.categorie) }}
-        {{ form_widget(form.categorie) }}
-    </div>
-    <div class="form-group">
-        {{ form_label(form.inhoud) }}
-        {{ form_widget(form.inhoud) }}
-    </div>
-    <div class="form-group">
-        {{ form_label(form.latitude, 'Latitude') }}
-        {{ form_widget(form.latitude, {'attr': {'class': 'form-control'}}) }}
-    </div>
-    <div class="form-group">
-        {{ form_label(form.longitude, 'Longitude') }}
-        {{ form_widget(form.longitude, {'attr': {'class': 'form-control'}}) }}
-    </div>
-    <button type="submit" class="btn btn-primary">Versturen</button>
-    {{ form_end(form) }}
 {% endblock %}
 
 {% block javascripts %}
     {{ parent() }}
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var map = L.map('map').setView([51.9225, 4.47917], 13); // Rotterdam coordinates
