@@ -25,6 +25,8 @@ class Melding
     #[ORM\Column(type: 'text')]
     public ?string $inhoud = null;
 
+
+    #[ORM\Column(nullable: true)]
     public ?string $afbeelding_url_eindresultaat = null; // New property for end result picture
 
 
@@ -35,7 +37,6 @@ class Melding
     public ?\DateTimeInterface $datum_tijd = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\Url]
     public ?string $afbeelding_url = null;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 8, nullable: true)]

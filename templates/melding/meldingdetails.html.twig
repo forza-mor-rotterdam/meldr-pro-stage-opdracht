@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-
     {% include 'navbar.html.twig' %}
 {% endblock %}
 
@@ -30,10 +29,19 @@
                     <p class="card-text"><strong>Gegeven naam:</strong> {{ melding.user.givenName }}</p>
                 {% endif %}
 
+
                 {% if not melding.afgehandeld %}
-                    <form action="{{ path('melding_afhandelen', {'id': melding.melding_id}) }}" method="post">
-                        <button type="submit" class="btn btn-primary">Afhandelen</button>
-                    </form>
+
+
+                    {{ form_start(form) }}
+                    <div class="form-group">
+                        {{ form_label(form.afbeelding_url_eindresultaat) }}
+                        {{ form_widget(form.afbeelding_url_eindresultaat) }}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="background-color: deepPink; border-color: deepPink;">Afhandelen</button> <!-- Deep pink -->
+
+                    {{ form_end(form) }}
                 {% else %}
                     <p class="mt-4"><em>Deze melding is al afgehandeld.</em></p>
                 {% endif %}

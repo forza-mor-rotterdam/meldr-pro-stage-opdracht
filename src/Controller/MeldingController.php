@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Melding;
+use App\Form\MeldingAfhandelType;
 use App\Form\MeldingType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -116,20 +117,66 @@ class MeldingController extends AbstractController
     }
 
     #[Route('/details/{id}', name: 'melding_details')]
-    public function details($id): Response
+    public function details($id, Request $request): Response
     {
+
+
+
+
         // Zoek de melding in de database op basis van de ID
         $melding = $this->entityManager->getRepository(Melding::class)->find($id);
+
+
 
         // Controleer of de melding bestaat
         if (!$melding) {
             // Gooi een 404 Not Found uitzondering als de melding niet bestaat
             throw $this->createNotFoundException('Deze melding bestaat niet');
+
+
         }
+
+
+
+        $form = $this->createForm(MeldingAfhandelType::class, $melding);
+        $form->handleRequest($request);
+
+        // Verwerk het ingediende formulier
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile|null $afbeeldingFile */
+            $afbeeldingFile = $form->get('afbeelding_url_eindresultaat')->getData();
+
+            // Verwerk de geüploade afbeelding
+            if ($afbeeldingFile) {
+                // Genereer een unieke bestandsnaam
+                $nieuweBestandsnaam = uniqid().'.'.$afbeeldingFile->getClientOriginalExtension();
+                // Verplaats het bestand naar de gewenste map
+                $afbeeldingFile->move(
+                    $this->getParameter('afbeeldingen_directory'),
+                    $nieuweBestandsnaam
+                );
+                // Werk de entiteit bij met de URL van de afbeelding
+                $melding->setAfbeeldingUrlEindresultaat($nieuweBestandsnaam);
+            }
+
+            $melding->setAfgehandeld(true);
+
+
+
+
+            // Sla de melding op in de database
+            $this->entityManager->flush();
+
+            // Stuur de gebruiker door naar de bevestigingspagina
+            return $this->redirectToRoute('melding_details', ['id' => $melding->getMeldingId()]);
+        }
+
+
+
 
         // Toon de detailpagina van de melding
         return $this->render('melding/meldingdetails.html.twig', [
-            'melding' => $melding,
+            'melding' => $melding, 'form' => $form->createView()
         ]);
     }
 
