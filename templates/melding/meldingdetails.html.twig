@@ -29,21 +29,20 @@
                     <p class="card-text"><strong>Gegeven naam:</strong> {{ melding.user.givenName }}</p>
                 {% endif %}
 
-
-                {% if not melding.afgehandeld %}
-
-
+                {% if melding.afgehandeld %}
+                    <p class="mt-4"><em>Deze melding is al afgehandeld.</em></p>
+                    {% if melding.afbeelding_url_eindresultaat %}
+                        <h2 class="mt-4">Afbeelding bij Afhandeling</h2>
+                        <img src="{{ asset('uploads/afbeeldingen/' ~ melding.afbeelding_url_eindresultaat) }}" class="img-fluid" alt="Afbeelding bij afhandeling">
+                    {% endif %}
+                {% else %}
                     {{ form_start(form) }}
                     <div class="form-group">
                         {{ form_label(form.afbeelding_url_eindresultaat) }}
                         {{ form_widget(form.afbeelding_url_eindresultaat) }}
                     </div>
-
                     <button type="submit" class="btn btn-primary" style="background-color: deepPink; border-color: deepPink;">Afhandelen</button> <!-- Deep pink -->
-
                     {{ form_end(form) }}
-                {% else %}
-                    <p class="mt-4"><em>Deze melding is al afgehandeld.</em></p>
                 {% endif %}
             </div>
         </div>
