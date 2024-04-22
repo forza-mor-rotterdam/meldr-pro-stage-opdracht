@@ -36,7 +36,7 @@
                 Geen afbeelding beschikbaar
               {% endif %}
             </td>
-            <td>{{ melding.afgehandeld ? 'Done' : 'Not done' }}</td>
+            <td style="background-color: {% if melding.afgehandeld %} #28a745 {% else %} #dc3545 {% endif %}">{{ melding.afgehandeld ? 'Done' : 'Not done' }}</td>
             <td>
               <a href="{{ path('melding_details', {'id': melding.melding_id}) }}" class="btn btn-primary">Details</a>
             </td>
